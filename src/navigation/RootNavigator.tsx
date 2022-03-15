@@ -14,17 +14,16 @@ import { AppState } from 'store/reducers';
 import { ThemeContext } from 'resources/theme';
 
 import { Storage } from 'utilities';
-import { AuthenticateModel, AuthenticateAPI } from 'services';
+import { AuthenticateAPI } from 'services';
 
 import AuthenticateNavigator from './AuthenticateNavigator';
 import MainNavigator from './MainNavigator';
 
-import { NAVIGATION_MAIN, NAVIGATION_AUTHEN } from './routes';
-
-export type RootStackList = {
-  [NAVIGATION_AUTHEN]: undefined;
-  [NAVIGATION_MAIN]: undefined;
-};
+import {
+  NAVIGATION_MAIN,
+  NAVIGATION_AUTHEN,
+  type RootStackList,
+} from './routes';
 
 const NativeStack = createNativeStackNavigator<RootStackList>();
 
@@ -44,24 +43,23 @@ const RootNavigator: React.FC<RootNavigatorProps> = ({
 
   useEffect(() => {
     if (isLogged) {
-      async function refreshToken() {
+      const refreshToken = async () => {
         const data = await Storage.getToken();
-        if (data) {
-          const dataObj = JSON.parse(data) as AuthenticateModel;
-          const res = await AuthenticateAPI.refreshToken(dataObj.refreshToken);
-          if (res.data.status == 0) {
-            Storage.setToken(
+        if (data !== undefined) {
+          const res = await AuthenticateAPI.refreshToken(data.refreshToken);
+          if (res.data.status === 0) {
+            await Storage.setToken(
               res.data.data?.accessToken,
               res.data.data?.refreshToken
             );
           } else {
-            Storage.removeToken();
+            await Storage.removeToken();
             refreshTokenFailure();
           }
         }
-      }
-      refreshToken().catch(() => {
-        Storage.removeToken();
+      };
+      refreshToken().catch(async () => {
+        await Storage.removeToken();
         refreshTokenFailure();
       });
     }

@@ -1,41 +1,38 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { ThemeContext } from 'resources/theme';
-import { localization } from 'resources/localization';
+import Localization from 'resources/localization';
 
-import { SettingNavigationProp } from 'navigation';
+import { SettingNavigationProp } from 'navigation/routes';
 
 import { RNButton } from 'common/components';
 
 const DetailSettingScreen: React.FC = () => {
-  const { theme } = useContext(ThemeContext);
-
   const navigation = useNavigation<SettingNavigationProp>();
 
-  function nextDetailHomeScreen() {
+  const nextDetailHomeScreen = () => {
     navigation.navigate('NAVIGATION_TAB_HOME', {
       screen: 'NAVIGATION_DETAIL_HOME_SCREEN',
     });
-  }
+  };
 
-  function nextHomeScreen() {
+  const nextHomeScreen = () => {
     navigation.navigate('NAVIGATION_TAB_HOME', {
       screen: 'NAVIGATION_HOME_SCREEN',
     });
-  }
+  };
 
   return (
     <View style={styles.container}>
       <RNButton
-        text={localization.detailSettingScreen.home}
+        text={Localization.detailSettingScreen.home}
         style={styles.button}
         onPress={nextHomeScreen}
       />
       <RNButton
-        text={localization.detailSettingScreen.detailHome}
+        text={Localization.detailSettingScreen.detailHome}
         style={styles.button}
         onPress={nextDetailHomeScreen}
       />
@@ -44,11 +41,11 @@ const DetailSettingScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   button: {
     margin: 12,
+  },
+  container: {
+    flex: 1,
   },
 });
 

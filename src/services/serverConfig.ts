@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Platform } from 'react-native';
 
 const DEV = {
   TYPE: 'Develop',
   BASE_URL:
-    Platform.OS == 'ios' ? 'http://localhost:3000/' : 'http://10.0.2.2:3000/',
+    Platform.OS === 'ios' ? 'http://localhost:3000/' : 'http://10.0.2.2:3000/',
 };
 
 const PROD = {
@@ -40,7 +41,7 @@ const ENV = DEV;
  * @param path is PATHS
  */
 function getURL(path: string) {
-  return 'api/' + path;
+  return `api/${path}`;
 }
 
-export { ENV, PATHS, getURL };
+export { DEV, ENV, PATHS, getURL };

@@ -1,4 +1,4 @@
-import { KEY } from 'common/constants';
+export const ACTION_STATUS_AUTHENTICATE = 'ACTION_STATUS_AUTHENTICATE';
 
 /**
  * Change status authenticate of user.
@@ -9,7 +9,7 @@ import { KEY } from 'common/constants';
  */
 export function changeStatusAuthenticate(status: boolean) {
   return {
-    type: KEY.ACTION_STATUS_AUTHENTICATE,
+    type: ACTION_STATUS_AUTHENTICATE,
     payload: {
       status,
     },

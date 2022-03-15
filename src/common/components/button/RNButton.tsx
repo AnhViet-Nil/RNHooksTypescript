@@ -18,23 +18,24 @@ interface RNButtonProps {
   textStyle?: TextStyle;
 }
 
+const defaultProps = {
+  style: undefined,
+  textStyle: undefined,
+};
+
 /**
  *  Common UI RNButton
  *
  * @require text button
  * @require onPress button
  */
-const RNButton: React.FC<RNButtonProps> = ({
-  style,
-  text,
-  textStyle,
-  ...props
-}) => {
+const RNButton: React.FC<RNButtonProps> = (props) => {
+  const { text, onPress, style, textStyle } = props;
   const { theme } = useContext(ThemeContext);
   const buttonStyle = [{ backgroundColor: theme.button }, styles.button, style];
 
   return (
-    <TouchableOpacity style={buttonStyle} {...props}>
+    <TouchableOpacity style={buttonStyle} onPress={onPress}>
       <RNText size={18} type={FontEnum.BOLD} style={textStyle}>
         {text}
       </RNText>
@@ -44,11 +45,13 @@ const RNButton: React.FC<RNButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: SPACING.horizontalSmall,
-    justifyContent: 'center',
     alignItems: 'center',
     height: DIMENS.button.height,
+    justifyContent: 'center',
+    paddingHorizontal: SPACING.horizontalSmall,
   },
 });
+
+RNButton.defaultProps = defaultProps;
 
 export default RNButton;

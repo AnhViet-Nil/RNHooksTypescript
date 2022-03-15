@@ -1,12 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { ThemeContext } from 'resources/theme';
-
 const RegisterScreen: React.FC = () => {
-  const { theme } = useContext(ThemeContext);
-
-  return <View style={styles.container}></View>;
+  return <View style={styles.container} />;
 };
 
 const styles = StyleSheet.create({

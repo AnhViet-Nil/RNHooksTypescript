@@ -1,12 +1,9 @@
 import React, { useContext } from 'react';
-
-import { NavigatorScreenParams } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ThemeContext } from 'resources/theme';
-import { localization } from 'resources/localization';
-import { KEY } from 'common/constants';
+import Localization from 'resources/localization';
 
 import {
   HomeScreen,
@@ -22,22 +19,10 @@ import {
   NAVIGATION_DETAIL_HOME_SCREEN,
   NAVIGATION_SETTING_SCREEN,
   NAVIGATION_DETAIL_SETTING_SCREEN,
+  type MainBottomTabList,
+  type HomeStackList,
+  type SettingStackList,
 } from './routes';
-
-export type HomeStackList = {
-  [NAVIGATION_HOME_SCREEN]: undefined;
-  [NAVIGATION_DETAIL_HOME_SCREEN]: undefined;
-};
-
-export type SettingStackList = {
-  [NAVIGATION_SETTING_SCREEN]: undefined;
-  [NAVIGATION_DETAIL_SETTING_SCREEN]: undefined;
-};
-
-export type MainBottomTabList = {
-  [NAVIGATION_TAB_HOME]: NavigatorScreenParams<HomeStackList>;
-  [NAVIGATION_TAB_SETTING]: NavigatorScreenParams<SettingStackList>;
-};
 
 const BottomTab = createBottomTabNavigator<MainBottomTabList>();
 const HomeStack = createNativeStackNavigator<HomeStackList>();
@@ -52,15 +37,15 @@ const HomeNavigator = () => {
       <HomeStack.Screen
         name={NAVIGATION_HOME_SCREEN}
         component={HomeScreen}
-        options={({ navigation }) => ({
-          title: localization.homeScreen.title,
+        options={() => ({
+          title: Localization.homeScreen.title,
         })}
       />
       <HomeStack.Screen
         name={NAVIGATION_DETAIL_HOME_SCREEN}
         component={DetailHomeScreen}
-        options={({ navigation }) => ({
-          title: localization.detailHomeScreen.title,
+        options={() => ({
+          title: Localization.detailHomeScreen.title,
         })}
       />
     </HomeStack.Navigator>
@@ -76,15 +61,15 @@ const SettingNavigator = () => {
       <SettingStack.Screen
         name={NAVIGATION_SETTING_SCREEN}
         component={SettingScreen}
-        options={({ navigation }) => ({
-          title: localization.settingScreen.title,
+        options={() => ({
+          title: Localization.settingScreen.title,
         })}
       />
       <SettingStack.Screen
         name={NAVIGATION_DETAIL_SETTING_SCREEN}
         component={DetailSettingScreen}
-        options={({ navigation }) => ({
-          title: localization.detailSettingScreen.title,
+        options={() => ({
+          title: Localization.detailSettingScreen.title,
         })}
       />
     </SettingStack.Navigator>
@@ -99,7 +84,7 @@ const MainNavigator = () => {
 
   return (
     <BottomTab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={() => ({
         tabBarActiveTintColor: theme.tabbar.active,
         tabBarInactiveTintColor: theme.tabbar.inactive,
         headerShown: false,
@@ -108,14 +93,14 @@ const MainNavigator = () => {
         name={NAVIGATION_TAB_HOME}
         component={HomeNavigator}
         options={{
-          tabBarLabel: localization.tabbar.home,
+          tabBarLabel: Localization.tabbar.home,
         }}
       />
       <BottomTab.Screen
         name={NAVIGATION_TAB_SETTING}
         component={SettingNavigator}
         options={{
-          tabBarLabel: localization.tabbar.setting,
+          tabBarLabel: Localization.tabbar.setting,
         }}
       />
     </BottomTab.Navigator>

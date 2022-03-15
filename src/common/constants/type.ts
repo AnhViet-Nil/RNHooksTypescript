@@ -1,3 +1,5 @@
+import { TextStyle } from 'react-native';
+
 export type DictionaryStringType = {
   [key: string]: string;
 };
@@ -7,5 +9,5 @@ export type DictionaryNumberType = {
 };
 
 export type DictionaryFunctionType = {
-  [key: string]: Function;
+  [key: string]: (color: string) => TextStyle;
 };

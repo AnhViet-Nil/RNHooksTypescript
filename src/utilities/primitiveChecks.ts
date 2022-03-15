@@ -4,7 +4,7 @@
  * @param n is number
  */
 export function isNonEmptyNumber(n: number | undefined | null) {
-  if (n == undefined || n == null) {
+  if (n === undefined || n == null) {
     return false;
   }
   return true;
@@ -16,7 +16,7 @@ export function isNonEmptyNumber(n: number | undefined | null) {
  *  @param s is string
  */
 export function isNonEmptyString(s: string | undefined | null) {
-  if (s == undefined || s == null || s == '') {
+  if (s === undefined || s == null || s === '') {
     return false;
   }
   return true;

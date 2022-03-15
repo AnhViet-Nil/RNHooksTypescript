@@ -9,10 +9,10 @@ import { isNonEmptyString } from './primitiveChecks';
  */
 export function isEmailValid(e: string | undefined | null) {
   if (isNonEmptyString(e)) {
-    const email = e!.trim();
+    const email = e?.trim();
     const regexEmail =
       /^(?:[\w!#$%&'*+\-/=?^`{|}~]+\.)*[\w!#$%&'*+\-/=?^`{|}~]+@(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-](?!\.)){0,61}[a-zA-Z0-9]?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-](?!$)){0,61}[a-zA-Z0-9]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/;
-    if (!email.match(regexEmail)) {
+    if (!email?.match(regexEmail)) {
       return false;
     }
     return true;
@@ -46,7 +46,7 @@ export function isPasswordValid(p: string) {
  */
 export function isPhoneNumberValid(p: string | undefined | null) {
   if (isNonEmptyString(p)) {
-    return p!.length >= LIMITS.minPhoneNumberLength;
+    return (p?.length || 0) >= LIMITS.minPhoneNumberLength;
   }
   return false;
 }

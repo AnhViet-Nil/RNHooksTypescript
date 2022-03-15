@@ -53,10 +53,10 @@ function register(
  *
  * @param refreshToken is string
  */
-function refreshToken(refreshToken: string) {
+function refreshToken(token: string) {
   const url = getURL(PATHS.authenticate.refresh);
   const params = {
-    refreshToken,
+    refreshToken: token,
   };
   return Axios.post<BaseModel<AuthenticateModel>>(url, params);
 }

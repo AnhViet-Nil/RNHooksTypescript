@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ENV } from './serverConfig';
-
-/**
- * If SHOW_LOG = false to stop API logging
- */
-const SHOW_LOG = true;
+import { ENV, DEV } from './serverConfig';
 
 /**
  * Describe request api logging
@@ -12,13 +12,13 @@ const SHOW_LOG = true;
  * @param config is AxiosRequestConfig
  */
 function describeRequest(config: AxiosRequestConfig<any>) {
-  if (!SHOW_LOG || ENV.TYPE !== 'Develop') {
+  if (ENV.TYPE !== DEV.TYPE) {
     return;
   }
   //------------------------------------------
   console.group('%c REQUEST', 'color: white; background-color: #2274A5');
-  console.log(`URI: ${config.url}`);
-  console.log(`METHOD: ${config.method}`);
+  console.log(`URI: ${config.url || ''}`);
+  console.log(`METHOD: ${config.method || ''}`);
   console.log('HEADERS:');
   console.log('HEADERS:', JSON.stringify(config.headers?.common));
   //------------------------------------------
@@ -39,7 +39,7 @@ function describeRequest(config: AxiosRequestConfig<any>) {
  * @param response is AxiosResponse
  */
 function describeSuccessResponse(response: AxiosResponse<any, any>) {
-  if (!SHOW_LOG || ENV.TYPE !== 'Develop') {
+  if (ENV.TYPE !== DEV.TYPE) {
     return;
   }
   //----------------------------------------------
@@ -58,7 +58,7 @@ function describeSuccessResponse(response: AxiosResponse<any, any>) {
  * @param error is any
  */
 function describeErrorResponse(error: any) {
-  if (!SHOW_LOG || ENV.TYPE !== 'Develop') {
+  if (ENV.TYPE !== DEV.TYPE) {
     return;
   }
   //-----------------------------------------------------
@@ -67,23 +67,23 @@ function describeErrorResponse(error: any) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
     const request = error.response.request || error.request || {};
-    console.log(`URI: ${request._url}`);
-    console.log(`STATUS: ${error.response.status}`);
+    console.error(`URI: ${request._url}`);
+    console.error(`STATUS: ${error.response.status}`);
     //------------------------------------------------
-    console.log('DATA:', JSON.stringify(error.response.data));
+    console.error('DATA:', JSON.stringify(error.response.data));
     //------------------------------------------------
   } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
     // http.ClientRequest in node.js
-    console.log(`URI: ${error.request._url}`);
-    console.log('REQUEST:');
-    console.log('REQUEST:', JSON.stringify(error.request._response));
+    console.error(`URI: ${error.request._url}`);
+    console.error('REQUEST:');
+    console.error('REQUEST:', JSON.stringify(error.request._response));
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log(`UNKNOWN ERROR: ${error.message}`);
+    console.error(`UNKNOWN ERROR: ${error.message}`);
   }
-  console.log('CONFIG:', JSON.stringify(error.config));
+  console.error('CONFIG:', JSON.stringify(error.config));
   console.groupEnd();
 }
 

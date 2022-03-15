@@ -1,6 +1,8 @@
 import EncryptedStorage from 'react-native-encrypted-storage';
 
-import { KEY } from 'common/constants';
+import { AuthenticateModel } from 'services';
+
+const STORAGE_TOKEN = 'STORAGE_TOKEN';
 
 /**
  *  Async Save token to Encrypted Storage
@@ -8,17 +10,17 @@ import { KEY } from 'common/constants';
  * @param accessToken is string
  * @param refreshToken is string
  */
-async function setToken(accessToken: string = '', refreshToken: string = '') {
+async function setToken(accessToken = '', refreshToken = '') {
   try {
     await EncryptedStorage.setItem(
-      KEY.STORAGE_TOKEN,
+      STORAGE_TOKEN,
       JSON.stringify({
         accessToken,
         refreshToken,
       })
     );
   } catch (error) {
-    console.log('Cannot save encrypted memory!', error);
+    throw new Error(`Cannot save encrypted memory! ${error as string}`);
   }
 }
 
@@ -27,12 +29,12 @@ async function setToken(accessToken: string = '', refreshToken: string = '') {
  */
 async function getToken() {
   try {
-    const data = await EncryptedStorage.getItem(KEY.STORAGE_TOKEN);
+    const data = await EncryptedStorage.getItem(STORAGE_TOKEN);
     if (data !== undefined) {
-      return data;
+      return JSON.parse(data || '') as AuthenticateModel;
     }
   } catch (error) {
-    console.log('Cannot access encrypted memory!', error);
+    throw new Error(`Cannot access encrypted memory! ${error as string}`);
   }
 }
 
@@ -41,9 +43,9 @@ async function getToken() {
  */
 async function removeToken() {
   try {
-    await EncryptedStorage.removeItem(KEY.STORAGE_TOKEN);
+    await EncryptedStorage.removeItem(STORAGE_TOKEN);
   } catch (error) {
-    console.log('Cannot remove encrypted memory!', error);
+    throw new Error(`Cannot remove encrypted memory! ${error as string}`);
   }
 }
 

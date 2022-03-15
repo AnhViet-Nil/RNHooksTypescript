@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
@@ -9,10 +9,9 @@ import { Dispatch } from 'redux';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import { Storage } from 'utilities';
-import { ThemeContext } from 'resources/theme';
-import { localization } from 'resources/localization';
+import Localization from 'resources/localization';
 
-import { AuthenticateNavigationProp } from 'navigation';
+import { AuthenticateNavigationProp } from 'navigation/routes';
 import { AuthenticateAPI } from 'services';
 
 import { RNButton, RNAlert } from 'common/components';
@@ -22,21 +21,20 @@ interface LoginProps {
 }
 
 const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
-  const { theme } = useContext(ThemeContext);
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
 
   const navigation = useNavigation<AuthenticateNavigationProp>();
 
-  async function login() {
+  const login = async () => {
     try {
-      const res = await AuthenticateAPI.login(
-        'nguyenviet@gmail.com',
-        '12345678'
-      );
-      // const res = await AuthenticateAPI.login(email, password);
-      if (res.data.status == 0) {
-        Storage.setToken(
+      // const res = await AuthenticateAPI.login(
+      //   'nguyenviet@gmail.com',
+      //   '12345678'
+      // );
+      const res = await AuthenticateAPI.login(email, password);
+      if (res.data.status === 0) {
+        await Storage.setToken(
           res.data.data?.accessToken,
           res.data.data?.refreshToken
         );
@@ -49,32 +47,32 @@ const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
         RNAlert.showError(`${error.message}`);
       }
     }
-  }
+  };
 
-  function nextRegisterScreen() {
+  const nextRegisterScreen = () => {
     navigation.navigate('NAVIGATION_REGISTER_SCREEN');
-  }
+  };
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.textInput}
         onChangeText={onChangeEmail}
-        placeholder={localization.loginScreen.email}
+        placeholder={Localization.loginScreen.email}
       />
       <TextInput
         style={styles.textInput}
         onChangeText={onChangePassword}
-        placeholder={localization.loginScreen.password}
-        secureTextEntry={true}
+        placeholder={Localization.loginScreen.password}
+        secureTextEntry
       />
       <RNButton
-        text={localization.loginScreen.login}
+        text={Localization.loginScreen.login}
         style={styles.button}
         onPress={login}
       />
       <RNButton
-        text={localization.loginScreen.register}
+        text={Localization.loginScreen.register}
         style={styles.button}
         onPress={nextRegisterScreen}
       />
@@ -83,17 +81,17 @@ const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
 };
 
 const styles = StyleSheet.create({
+  button: {
+    margin: 12,
+  },
   container: {
     flex: 1,
   },
   textInput: {
+    borderWidth: 1,
     height: 45,
     margin: 12,
-    borderWidth: 1,
     padding: 10,
-  },
-  button: {
-    margin: 12,
   },
 });
 

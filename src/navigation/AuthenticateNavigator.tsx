@@ -2,17 +2,15 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { localization } from 'resources/localization';
-import { KEY } from 'common/constants';
+import Localization from 'resources/localization';
 
 import { LoginScreen, RegisterScreen } from 'features';
 
-import { NAVIGATION_LOGIN_SCREEN, NAVIGATION_REGISTER_SCREEN } from './routes';
-
-export type AuthenticateStackList = {
-  [NAVIGATION_LOGIN_SCREEN]: undefined;
-  [NAVIGATION_REGISTER_SCREEN]: undefined;
-};
+import {
+  NAVIGATION_LOGIN_SCREEN,
+  NAVIGATION_REGISTER_SCREEN,
+  type AuthenticateStackList,
+} from './routes';
 
 const NativeStack = createNativeStackNavigator<AuthenticateStackList>();
 
@@ -25,15 +23,15 @@ const AuthenticateNavigator = () => {
       <NativeStack.Screen
         name={NAVIGATION_LOGIN_SCREEN}
         component={LoginScreen}
-        options={({ navigation }) => ({
-          title: localization.loginScreen.title,
+        options={() => ({
+          title: Localization.loginScreen.title,
         })}
       />
       <NativeStack.Screen
         name={NAVIGATION_REGISTER_SCREEN}
         component={RegisterScreen}
-        options={({ navigation }) => ({
-          title: localization.registerScreen.title,
+        options={() => ({
+          title: Localization.registerScreen.title,
         })}
       />
     </NativeStack.Navigator>

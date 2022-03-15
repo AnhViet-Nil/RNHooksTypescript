@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable func-names */
 import axios from 'axios';
 
 import { ENV } from './serverConfig';
@@ -27,9 +31,7 @@ Axios.interceptors.response.use(
     // Do something with response data
     Logger.describeSuccessResponse(response);
     if (response?.data?.accessToken) {
-      Axios.defaults.headers.common[
-        'Authorization'
-      ] = `Bearer ${response.data.accessToken}`;
+      Axios.defaults.headers.common.Authorization = `Bearer ${response.data.accessToken}`;
     }
     return response;
   },
@@ -39,9 +41,8 @@ Axios.interceptors.response.use(
     Logger.describeErrorResponse(error);
     if (error.response) {
       return error.response;
-    } else {
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
 
