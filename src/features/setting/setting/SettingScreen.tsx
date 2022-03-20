@@ -3,9 +3,9 @@ import { View, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
 
+import { AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import Localization from 'resources/localization';
@@ -15,11 +15,11 @@ import { SettingNavigationProp } from 'navigation/routes';
 
 import { RNButton, RNAlert } from 'common/components';
 
-interface SettingProps {
-  logoutSuccess: () => void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface SettingProps extends PropsFromRedux {}
 
-const SettingScreen: React.FC<SettingProps> = ({ logoutSuccess }) => {
+const SettingScreen: React.FC<SettingProps> = (props) => {
+  const { logoutSuccess } = props;
   const navigation = useNavigation<SettingNavigationProp>();
 
   const logout = async () => {
@@ -84,10 +84,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
   logoutSuccess: () => {
     dispatch(changeStatusAuthenticate(false));
   },
 });
 
-export default connect(null, mapDispatchToProps)(SettingScreen);
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(SettingScreen);

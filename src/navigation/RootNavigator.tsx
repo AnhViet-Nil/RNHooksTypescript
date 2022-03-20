@@ -5,11 +5,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
 
+import { AppState, AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
-import { AppState } from 'store/reducers';
 
 import { ThemeContext } from 'resources/theme';
 
@@ -27,18 +26,14 @@ import {
 
 const NativeStack = createNativeStackNavigator<RootStackList>();
 
-interface RootNavigatorProps {
-  isLogged: boolean;
-  refreshTokenFailure: () => void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface RootNavigatorProps extends PropsFromRedux {}
 
 /**
  * If you need to add normal Navigatior, add it in Root
  */
-const RootNavigator: React.FC<RootNavigatorProps> = ({
-  isLogged,
-  refreshTokenFailure,
-}) => {
+const RootNavigator: React.FC<RootNavigatorProps> = (props) => {
+  const { isLogged, refreshTokenFailure } = props;
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -91,10 +86,13 @@ const mapStateToProps = (state: AppState) => ({
   isLogged: state.authenticate.status,
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
   refreshTokenFailure: () => {
     dispatch(changeStatusAuthenticate(false));
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(RootNavigator);
+const connector = connect(mapStateToProps, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(RootNavigator);

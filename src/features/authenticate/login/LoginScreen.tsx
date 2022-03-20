@@ -3,9 +3,9 @@ import { View, TextInput, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { connect, ConnectedProps } from 'react-redux';
 
+import { AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import { Storage } from 'utilities';
@@ -16,15 +16,16 @@ import { AuthenticateAPI } from 'services';
 
 import { RNButton, RNAlert } from 'common/components';
 
-interface LoginProps {
-  loginSuccess: () => void;
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface LoginProps extends PropsFromRedux {}
 
-const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
-  const [email, onChangeEmail] = useState('');
-  const [password, onChangePassword] = useState('');
+const LoginScreen: React.FC<LoginProps> = (props) => {
+  const { loginSuccess } = props;
 
   const navigation = useNavigation<AuthenticateNavigationProp>();
+
+  const [email, onChangeEmail] = useState('');
+  const [password, onChangePassword] = useState('');
 
   const login = async () => {
     try {
@@ -95,10 +96,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
   loginSuccess: () => {
     dispatch(changeStatusAuthenticate(true));
   },
 });
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+const connector = connect(null, mapDispatchToProps);
+type PropsFromRedux = ConnectedProps<typeof connector>;
+
+export default connector(LoginScreen);
