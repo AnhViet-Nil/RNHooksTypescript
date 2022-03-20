@@ -3,9 +3,9 @@ import { View, TextInput, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useDispatch } from 'react-redux';
 
+import { AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import { Storage } from 'utilities';
@@ -16,15 +16,12 @@ import { AuthenticateAPI } from 'services';
 
 import { RNButton, RNAlert } from 'common/components';
 
-interface LoginProps {
-  loginSuccess: () => void;
-}
+const LoginScreen: React.FC = () => {
+  const navigation = useNavigation<AuthenticateNavigationProp>();
+  const dispatch: AppDispatch = useDispatch();
 
-const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
-
-  const navigation = useNavigation<AuthenticateNavigationProp>();
 
   const login = async () => {
     try {
@@ -38,7 +35,7 @@ const LoginScreen: React.FC<LoginProps> = ({ loginSuccess }) => {
           res.data.data?.accessToken,
           res.data.data?.refreshToken
         );
-        loginSuccess();
+        dispatch(changeStatusAuthenticate(true));
       } else {
         RNAlert.showError(res.data.message);
       }
@@ -95,10 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  loginSuccess: () => {
-    dispatch(changeStatusAuthenticate(true));
-  },
-});
-
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;

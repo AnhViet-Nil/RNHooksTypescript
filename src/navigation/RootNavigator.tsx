@@ -5,11 +5,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { AppState, AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
-import { AppState } from 'store/reducers';
 
 import { ThemeContext } from 'resources/theme';
 
@@ -27,19 +26,16 @@ import {
 
 const NativeStack = createNativeStackNavigator<RootStackList>();
 
-interface RootNavigatorProps {
-  isLogged: boolean;
-  refreshTokenFailure: () => void;
-}
-
 /**
  * If you need to add normal Navigatior, add it in Root
  */
-const RootNavigator: React.FC<RootNavigatorProps> = ({
-  isLogged,
-  refreshTokenFailure,
-}) => {
+const RootNavigator: React.FC = () => {
+  const dispatch: AppDispatch = useDispatch();
+
   const { theme } = useContext(ThemeContext);
+  const { isLogged } = useSelector((state: AppState) => ({
+    isLogged: state.authenticate.status,
+  }));
 
   useEffect(() => {
     if (isLogged) {
@@ -54,13 +50,13 @@ const RootNavigator: React.FC<RootNavigatorProps> = ({
             );
           } else {
             await Storage.removeToken();
-            refreshTokenFailure();
+            dispatch(changeStatusAuthenticate(false));
           }
         }
       };
       refreshToken().catch(async () => {
         await Storage.removeToken();
-        refreshTokenFailure();
+        dispatch(changeStatusAuthenticate(false));
       });
     }
   }, []);
@@ -87,14 +83,4 @@ const RootNavigator: React.FC<RootNavigatorProps> = ({
   );
 };
 
-const mapStateToProps = (state: AppState) => ({
-  isLogged: state.authenticate.status,
-});
-
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  refreshTokenFailure: () => {
-    dispatch(changeStatusAuthenticate(false));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(RootNavigator);
+export default RootNavigator;

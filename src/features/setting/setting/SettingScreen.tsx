@@ -3,9 +3,9 @@ import { View, StyleSheet } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import { useDispatch } from 'react-redux';
 
+import { AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import Localization from 'resources/localization';
@@ -15,17 +15,14 @@ import { SettingNavigationProp } from 'navigation/routes';
 
 import { RNButton, RNAlert } from 'common/components';
 
-interface SettingProps {
-  logoutSuccess: () => void;
-}
-
-const SettingScreen: React.FC<SettingProps> = ({ logoutSuccess }) => {
+const SettingScreen: React.FC = () => {
   const navigation = useNavigation<SettingNavigationProp>();
+  const dispatch: AppDispatch = useDispatch();
 
   const logout = async () => {
     try {
       await Storage.removeToken();
-      logoutSuccess();
+      dispatch(changeStatusAuthenticate(false));
     } catch (error) {
       if (error instanceof Error) {
         RNAlert.showError(`${error.message}`);
@@ -84,10 +81,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  logoutSuccess: () => {
-    dispatch(changeStatusAuthenticate(false));
-  },
-});
-
-export default connect(null, mapDispatchToProps)(SettingScreen);
+export default SettingScreen;
