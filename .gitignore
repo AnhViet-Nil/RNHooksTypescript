@@ -1,6 +1,15 @@
 # OSX
 #
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Project
+#
+.gradletasknamecache
+.vscode
+.eslintcache
+.env
 
 # Xcode
 #
@@ -26,14 +35,18 @@ DerivedData
 build/
 .idea
 .gradle
+gradle-app.setting
+!gradle-wrapper.jar
 local.properties
 *.iml
 *.hprof
+*.apk
 
 # node.js
 #
 node_modules/
 npm-debug.log
+yarn-debug.log
 yarn-error.log
 
 # BUCK
@@ -52,21 +65,21 @@ buck-out/
 */fastlane/report.xml
 */fastlane/Preview.html
 */fastlane/screenshots
+*/fastlane/test_output
+*/fastlane/readme.md
 
 # Bundle artifact
 *.jsbundle
 
 # CocoaPods
-/ios/Pods/
+ios/Pods/
+*.xcscmblueprint
+*.xccheckout
 
-#Pod lock
-/ios/Podfile.lock
-
-#Package lock
-package-lock.json
-
-#yarn lock
+# Logs
+#
+logs
+*.log
 yarn.lock
-
-#vscode
-.vscode
+Podfile.lock
+package-lock.json

@@ -39,6 +39,8 @@ export default {
     home: 'Trang chủ',
     detailHome: 'Chi tiết trang chủ',
     detailSetting: 'Chi tiết cài đặt',
+    themeLight: 'Chủ đề Sáng',
+    themeDark: 'Chủ đề Tối',
   },
   detailSettingScreen: {
     title: 'Chi tiết cài đặt',

@@ -1,7 +1,7 @@
-import React, { useContext, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { Text, TextStyle } from 'react-native';
 
-import { ThemeContext } from 'resources/theme';
+import { useCustomTheme } from 'resources/theme';
 import { TYPOGRAPHY, FontEnum } from 'common/constants';
 
 interface RNTextProps {
@@ -25,12 +25,12 @@ const defaultProps = {
  */
 const RNText: React.FC<RNTextProps> = (props) => {
   const { children, size, type, color, style } = props;
-  const { theme } = useContext(ThemeContext);
+  const { colors } = useCustomTheme();
 
   function getTextStyle(
     s: number,
     t: FontEnum = FontEnum.REGULER,
-    c: string = theme.text
+    c: string = colors.text
   ) {
     const key = `text${s}${t}`;
     const func = TYPOGRAPHY[key];

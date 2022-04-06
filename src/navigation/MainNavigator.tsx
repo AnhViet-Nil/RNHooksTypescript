@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { ThemeContext } from 'resources/theme';
+import { useCustomTheme } from 'resources/theme';
 import Localization from 'resources/localization';
 
 import {
@@ -80,13 +80,13 @@ const SettingNavigator = () => {
  * If you need to add normal screens, add it in TabBar Main
  */
 const MainNavigator = () => {
-  const { theme } = useContext(ThemeContext);
+  const { colors } = useCustomTheme();
 
   return (
     <BottomTab.Navigator
       screenOptions={() => ({
-        tabBarActiveTintColor: theme.tabbar.active,
-        tabBarInactiveTintColor: theme.tabbar.inactive,
+        tabBarActiveTintColor: colors.tabbar.active,
+        tabBarInactiveTintColor: colors.tabbar.inactive,
         headerShown: false,
       })}>
       <BottomTab.Screen
