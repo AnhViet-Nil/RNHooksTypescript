@@ -87,7 +87,7 @@ const SettingScreen: React.FC<SettingProps> = (props) => {
         onPress={changeThemeModeLight}
       />
       <RNButton
-        text={Localization.settingScreen.themeLight}
+        text={Localization.settingScreen.themeDark}
         style={styles.button}
         onPress={changeThemeModeDark}
       />
