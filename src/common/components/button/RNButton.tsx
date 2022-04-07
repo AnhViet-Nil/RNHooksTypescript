@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   TextStyle,
 } from 'react-native';
 
-import { ThemeContext } from 'resources/theme';
+import { useCustomTheme } from 'resources/theme';
 import { DIMENS, SPACING, FontEnum } from 'common/constants';
 
 import RNText from '../text/RNText';
@@ -31,8 +31,12 @@ const defaultProps = {
  */
 const RNButton: React.FC<RNButtonProps> = (props) => {
   const { text, onPress, style, textStyle } = props;
-  const { theme } = useContext(ThemeContext);
-  const buttonStyle = [{ backgroundColor: theme.button }, styles.button, style];
+  const { colors } = useCustomTheme();
+  const buttonStyle = [
+    { backgroundColor: colors.button },
+    styles.button,
+    style,
+  ];
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={onPress}>

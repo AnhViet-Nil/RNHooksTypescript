@@ -9,6 +9,7 @@ import { AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
 import { Storage } from 'utilities';
+import { useCustomTheme } from 'resources/theme';
 import Localization from 'resources/localization';
 
 import { AuthenticateNavigationProp } from 'navigation/routes';
@@ -23,6 +24,7 @@ const LoginScreen: React.FC<LoginProps> = (props) => {
   const { loginSuccess } = props;
 
   const navigation = useNavigation<AuthenticateNavigationProp>();
+  const { colors } = useCustomTheme();
 
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
@@ -55,7 +57,7 @@ const LoginScreen: React.FC<LoginProps> = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <TextInput
         style={styles.textInput}
         onChangeText={onChangeEmail}

@@ -6,8 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import { connect, ConnectedProps } from 'react-redux';
 
 import { AppDispatch } from 'store';
-import { changeStatusAuthenticate } from 'store/actions';
+import { changeStatusAuthenticate, changeThemeMode } from 'store/actions';
 
+import { ThemeEnum } from 'resources/theme';
 import Localization from 'resources/localization';
 import Storage from 'utilities/encryptedStorage';
 
@@ -19,7 +20,8 @@ import { RNButton, RNAlert } from 'common/components';
 interface SettingProps extends PropsFromRedux {}
 
 const SettingScreen: React.FC<SettingProps> = (props) => {
-  const { logoutSuccess } = props;
+  const { logoutSuccess, changeTheme } = props;
+
   const navigation = useNavigation<SettingNavigationProp>();
 
   const logout = async () => {
@@ -49,6 +51,14 @@ const SettingScreen: React.FC<SettingProps> = (props) => {
     navigation.navigate('NAVIGATION_DETAIL_SETTING_SCREEN');
   };
 
+  const changeThemeModeLight = () => {
+    changeTheme(ThemeEnum.LIGHT);
+  };
+
+  const changeThemeModeDark = () => {
+    changeTheme(ThemeEnum.DARK);
+  };
+
   return (
     <View style={styles.container}>
       <RNButton
@@ -71,6 +81,16 @@ const SettingScreen: React.FC<SettingProps> = (props) => {
         style={styles.button}
         onPress={nextDetailSettingScreen}
       />
+      <RNButton
+        text={Localization.settingScreen.themeLight}
+        style={styles.button}
+        onPress={changeThemeModeLight}
+      />
+      <RNButton
+        text={Localization.settingScreen.themeLight}
+        style={styles.button}
+        onPress={changeThemeModeDark}
+      />
     </View>
   );
 };
@@ -87,6 +107,9 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
   logoutSuccess: () => {
     dispatch(changeStatusAuthenticate(false));
+  },
+  changeTheme: (mode: ThemeEnum) => {
+    dispatch(changeThemeMode(mode));
   },
 });
 

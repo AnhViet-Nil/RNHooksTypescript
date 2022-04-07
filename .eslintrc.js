@@ -41,6 +41,7 @@ module.exports = {
     'arrow-body-style': 'off',
     'prefer-arrow-callback': 'off',
     'consistent-return': ['off', { treatUndefinedAsUnspecified: true }],
+    '@typescript-eslint/no-floating-promises': ['off'],
     '@typescript-eslint/default-param-last': ['off'],
     '@typescript-eslint/no-use-before-define': ['off'],
     '@typescript-eslint/no-misused-promises': [

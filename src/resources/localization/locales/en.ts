@@ -39,6 +39,8 @@ export default {
     home: 'Home',
     detailHome: 'DetailHome',
     detailSetting: 'DetailSetting',
+    themeLight: 'Theme Light',
+    themeDark: 'Theme Dark',
   },
   detailSettingScreen: {
     title: 'DetailSetting',

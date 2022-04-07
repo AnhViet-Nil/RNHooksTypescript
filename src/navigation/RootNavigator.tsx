@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { StatusBar, StatusBarStyle } from 'react-native';
+import React, { useEffect, useCallback } from 'react';
+import { StatusBar } from 'react-native';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import { connect, ConnectedProps } from 'react-redux';
 import { AppState, AppDispatch } from 'store';
 import { changeStatusAuthenticate } from 'store/actions';
 
-import { ThemeContext } from 'resources/theme';
+import { LightTheme, DarkTheme, ThemeEnum } from 'resources/theme';
 
 import { Storage } from 'utilities';
 import { AuthenticateAPI } from 'services';
@@ -33,37 +33,40 @@ interface RootNavigatorProps extends PropsFromRedux {}
  * If you need to add normal Navigatior, add it in Root
  */
 const RootNavigator: React.FC<RootNavigatorProps> = (props) => {
-  const { isLogged, refreshTokenFailure } = props;
-  const { theme } = useContext(ThemeContext);
+  const { isLogged, themeMode, refreshTokenFailure } = props;
+
+  const refreshToken = useCallback(async () => {
+    try {
+      const data = await Storage.getToken();
+      if (data !== undefined) {
+        const res = await AuthenticateAPI.refreshToken(data.refreshToken);
+        if (res.data.status === 0) {
+          await Storage.setToken(
+            res.data.data?.accessToken,
+            res.data.data?.refreshToken
+          );
+        } else {
+          await Storage.removeToken();
+          refreshTokenFailure();
+        }
+      }
+    } catch {
+      await Storage.removeToken();
+      refreshTokenFailure();
+    }
+  }, [props]);
 
   useEffect(() => {
     if (isLogged) {
-      const refreshToken = async () => {
-        const data = await Storage.getToken();
-        if (data !== undefined) {
-          const res = await AuthenticateAPI.refreshToken(data.refreshToken);
-          if (res.data.status === 0) {
-            await Storage.setToken(
-              res.data.data?.accessToken,
-              res.data.data?.refreshToken
-            );
-          } else {
-            await Storage.removeToken();
-            refreshTokenFailure();
-          }
-        }
-      };
-      refreshToken().catch(async () => {
-        await Storage.removeToken();
-        refreshTokenFailure();
-      });
+      refreshToken();
     }
-  }, []);
+  }, [refreshToken]);
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={theme.navigationbar.barStyle as StatusBarStyle} />
-      <NavigationContainer>
+      <StatusBar />
+      <NavigationContainer
+        theme={themeMode === ThemeEnum.LIGHT ? LightTheme : DarkTheme}>
         <NativeStack.Navigator screenOptions={{ headerShown: false }}>
           {isLogged ? (
             <NativeStack.Screen
@@ -84,6 +87,7 @@ const RootNavigator: React.FC<RootNavigatorProps> = (props) => {
 
 const mapStateToProps = (state: AppState) => ({
   isLogged: state.authenticate.status,
+  themeMode: state.theme.mode,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch) => ({
