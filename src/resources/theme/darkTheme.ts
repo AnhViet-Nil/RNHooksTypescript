@@ -6,6 +6,7 @@ export default {
    * Common -
    */
   transparent: 'transparent',
+  background: '#003050',
   /**
    * Button -
    */

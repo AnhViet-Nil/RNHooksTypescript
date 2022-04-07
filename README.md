@@ -1,6 +1,8 @@
 # Base source React-Native use Hook and Typescript
 
 > Help manage code better
+- Branch: use_connect
+- Branch: use_useDispatch_useSelector
 
 ## Table of Contents
 

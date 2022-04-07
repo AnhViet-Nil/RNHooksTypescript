@@ -2,16 +2,26 @@
   "name": "rnhookstypescript",
   "version": "0.0.1",
   "private": true,
+  "keywords": [
+    "react native",
+    "typescript"
+  ],
+  "author": {
+    "name": "Viet Anh", 
+    "email": "anhviet.nil@gmail.com",
+    "url":"https://github.com/AnhViet-Nil"
+  },
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start-reset": "npx react-native start --reset-cache",
     "pod-ios": "npx pod-install",
-    "run-ios": "npx react-native run-ios",
-    "run-android": "npx react-native run-android",
-    "reset-cache": "npx react-native start --reset-cache"
+    "run-ios": "npx react-native run-ios --simulator='iPhone 11 (iOS 13.0)'",
+    "run-android": "npx react-native run-android --variant=Debug",
+    "android-clean": "cd android && ./gradlew clean && ./gradlew :app:bundleRelease && cd ..",
+    "android-build-debug": "cd android && ./gradlew assembleDebug && cd ..",
+    "android-build-release": "cd android && ./gradlew assembleRelease && cd .."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.16.1",
